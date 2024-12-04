@@ -1,5 +1,5 @@
 {
-  "name": "--experimental-app",
+  "name": "booklist-next-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
