@@ -1,95 +1,58 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import React, { useState, useEffect } from "react";
+import { fetchBooks, deleteBook } from "@/app/utils/api";
+import BookList from "@/app/components/BookList";
+
+const HomePage = () => {
+  const [books, setBooks] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const loadBooks = async () => {
+      try {
+        setIsLoading(true); // 로딩 시작
+        const data = await fetchBooks(); // API 호출
+        setBooks(data);
+        setError(null); // 에러 초기화
+      } catch (err) {
+        console.error("책 데이터를 불러오는 데 실패했습니다:", err);
+        setError("책 데이터를 불러오는 데 실패했습니다.");
+      } finally {
+        setIsLoading(false); // 로딩 종료
+      }
+    };
+
+    loadBooks();
+  }, []);
+
+  // 삭제 기능 구현
+  const handleDelete = async (id: string) => {
+    try {
+      setIsLoading(true); // 로딩 시작
+      await deleteBook(id); // API 호출로 책 데이터 삭제
+      setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id)); // 로컬 상태에서 삭제
+      setError(null);
+    } catch (err) {
+      console.error(`책 ID ${id} 삭제 중 오류 발생:`, err);
+      setError("책을 삭제하는 데 실패했습니다.");
+    } finally {
+      setIsLoading(false); // 로딩 종료
+    }
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    <div>
+      <h2>책 목록</h2>
+      {isLoading && <p>데이터를 불러오는 중입니다...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {!isLoading && !error && books.length === 0 && <p>등록된 책이 없습니다.</p>}
+      {!isLoading && !error && (
+        <BookList books={books} onDelete={handleDelete} />
+      )}
     </div>
   );
-}
+};
+
+export default HomePage;
