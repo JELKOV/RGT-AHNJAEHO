@@ -49,7 +49,7 @@ const HomePage = () => {
     if (books.length <= 1 && filters.page > 1) {
       setFilters((prevFilters) => ({
         ...prevFilters,
-        page: prevFilters.page - 1, // 이전 페이지로 이동
+        page: prevFilters.page - 1,
       }));
     }
 
