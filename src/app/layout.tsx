@@ -49,7 +49,7 @@ export default function RootLayout({
             textAlign: "center",
           }}
         >
-          <p style={{ margin: 0 }}>© 2024 제호의 온라인 서점. 모든 권리 보유.</p>
+          <p style={{ margin: 0 }}>© 2024 제호의 온라인 서점</p>
         </footer>
       </body>
     </html>

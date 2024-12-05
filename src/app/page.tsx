@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { fetchBooks, deleteBook } from "@/app/utils/api";
+import { fetchBooks, deleteBook, changeBookQuantity } from "@/app/utils/api";
 import BookList from "@/app/components/BookList";
+import Pagination from "@/app/components/Pagination";
 
 const HomePage = () => {
   const [books, setBooks] = useState<any[]>([]);
@@ -43,6 +44,15 @@ const HomePage = () => {
       setIsLoading(true);
       await deleteBook(id);
       setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
+
+    // 페이지네이션 처리: 만약 현재 페이지에 책이 1개 미만이면 이전 페이지로 이동
+    if (books.length <= 1 && filters.page > 1) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        page: prevFilters.page - 1, // 이전 페이지로 이동
+      }));
+    }
+
       setError(null);
     } catch (err) {
       console.error(`책 ID ${id} 삭제 중 오류 발생:`, err);
@@ -53,16 +63,26 @@ const HomePage = () => {
   };
 
   // 수량 증가
-  const handleIncreaseQuantity = (id: string) => {
+  const handleIncreaseQuantity = async (id: string) => {
+    // 로컬 상태 업데이트
     setBooks((prevBooks) =>
       prevBooks.map((book) =>
         book.id === id ? { ...book, quantity: book.quantity + 1 } : book
       )
     );
+
+    // 서버에 수량 변경 요청
+    try {
+      await changeBookQuantity(id, 1); // 수량 증가 요청 (quantityChange = 1)
+    } catch (err) {
+      console.error("수량 업데이트 실패:", err);
+      setError("수량 업데이트에 실패했습니다.");
+    }
   };
 
   // 수량 감소
-  const handleDecreaseQuantity = (id: string) => {
+  const handleDecreaseQuantity = async (id: string) => {
+    // 로컬 상태 업데이트
     setBooks((prevBooks) =>
       prevBooks.map((book) =>
         book.id === id && book.quantity > 0
@@ -70,6 +90,14 @@ const HomePage = () => {
           : book
       )
     );
+
+    // 서버에 수량 변경 요청
+    try {
+      await changeBookQuantity(id, -1); // 수량 감소 요청 (quantityChange = -1)
+    } catch (err) {
+      console.error("수량 업데이트 실패:", err);
+      setError("수량 업데이트에 실패했습니다.");
+    }
   };
 
   // 필터 값 변경 핸들러
@@ -93,11 +121,13 @@ const HomePage = () => {
   };
 
   // 페이지 변경 핸들러
-  const handlePageChange = (newPage: number) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      page: newPage,
-    }));
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        page, // 새로운 페이지 번호 설정
+      }));
+    }
   };
 
   return (
@@ -139,35 +169,12 @@ const HomePage = () => {
             onIncreaseQuantity={handleIncreaseQuantity}
             onDecreaseQuantity={handleDecreaseQuantity}
           />
-          {/* 페이지네이션 */}
-          <div style={{ marginTop: "1rem", display: "flex", gap: "1rem" }}>
-            <button
-              onClick={() => handlePageChange(filters.page - 1)}
-              disabled={filters.page === 1 || isLoading}
-              style={{
-                padding: "0.5rem",
-                backgroundColor: filters.page === 1 ? "#ccc" : "#007bff",
-                color: "#fff",
-              }}
-            >
-              이전
-            </button>
-            <span>
-              페이지 {filters.page} / {totalPages}
-            </span>
-            <button
-              onClick={() => handlePageChange(filters.page + 1)}
-              disabled={filters.page === totalPages || isLoading}
-              style={{
-                padding: "0.5rem",
-                backgroundColor:
-                  filters.page === totalPages ? "#ccc" : "#007bff",
-                color: "#fff",
-              }}
-            >
-              다음
-            </button>
-          </div>
+          {/* 페이지네이션 컴포넌트 */}
+          <Pagination
+            currentPage={filters.page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </>
       )}
     </div>
