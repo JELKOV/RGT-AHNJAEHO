@@ -11,6 +11,9 @@ type Book = {
   description: string;
 };
 
+type QuantityChangePayload = {
+  quantityChange: number;
+};
 
 // [GET] 모든 책 데이터 가져오기
 export const fetchBooks = async (filters: { title?: string; author?: string; page?: number; limit?: number }): Promise<{ books: Book[]; totalPages: number; currentPage: number }> => {
@@ -128,21 +131,21 @@ export const deleteBook = async (id: string): Promise<void> => {
 export const changeBookQuantity = async (
   id: string,
   quantityChange: number
-): Promise<any> => {
+): Promise<Book> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
-      method: "PATCH", // PATCH 요청
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ quantityChange }), // 수량 변화 값 전달
+      body: JSON.stringify({ quantityChange } as QuantityChangePayload),
     });
 
     if (!response.ok) {
       throw new Error(`ID ${id}의 수량을 변경하는 데 실패했습니다.`);
     }
 
-    return await response.json(); // 변경된 책 데이터 반환
+    return await response.json() as Book; // 서버가 반환하는 데이터가 Book이라고 가정
   } catch (err) {
     console.error(`[changeBookQuantity] ID ${id} 수량 변경 실패:`, err);
     throw err;
