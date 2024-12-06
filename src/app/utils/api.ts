@@ -11,9 +11,13 @@ type Book = {
   description?: string;
 };
 
+// 수량 변화 타입정의
 type QuantityChangePayload = {
   quantityChange: number;
 };
+
+// NewBook 타입 정의 
+type NewBook = Omit<Book, "id">;
 
 // [GET] 모든 책 데이터 가져오기
 export const fetchBooks = async (filters: { title?: string; author?: string; page?: number; limit?: number }): Promise<{ books: Book[]; totalPages: number; currentPage: number }> => {
@@ -67,7 +71,7 @@ export const fetchBookByOne = async (id: string): Promise<Book> => {
 };
 
 // [POST] 새로운 책 데이터 추가하기
-export const addBook = async (book: Book): Promise<Book> => {
+export const addBook = async (book: NewBook): Promise<Book> => {
   try {
     const response = await fetch(BASE_URL, {
       method: "POST", // POST 요청
