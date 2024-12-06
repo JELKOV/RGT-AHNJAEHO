@@ -41,7 +41,7 @@
    - 책 추가, 삭제, 수정, 검색 기능 제공
 2. **Next.js App Router 방식**
    - 폴더 기반 라우팅
-3. **API 라우트**
+3. **API Route**
    - RESTful API 설계를 활용한 데이터 CRUD 기능 구현
 
 ---
@@ -67,7 +67,7 @@ booklist-next-app/
 │   ├── data/
 │   │   └── books.ts                    # 더미 데이터 및 업데이트 함수
 │   ├── public/
-│   │   └── images/                     # 정적 이미지 파일 (책 커버 등)
+│   │   └── images/                     # 정적 이미지 파일
 │   ├── utils/
 │   │   └── api.ts                      # API 호출 관련 유틸리티 함수
 │   ├── styles/
