@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { fetchBookByOne } from "@/app/utils/api"; // 책 상세 정보 API 호출
 
@@ -22,7 +22,7 @@ const BookDetailPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 책 정보를 로딩하는 함수
-  const loadBookDetail = async () => {
+  const loadBookDetail = useCallback(async () => {
     try {
       setIsLoading(true);
       const data = await fetchBookByOne(id); // API 호출
@@ -34,14 +34,14 @@ const BookDetailPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id]); // id가 변경될 때만 재호출
 
   // 컴포넌트가 마운트되거나 ID가 변경될 때 호출
   useEffect(() => {
     if (id) {
       loadBookDetail();
     }
-  }, [id]);
+  }, [id, loadBookDetail]);
 
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>{error}</div>;

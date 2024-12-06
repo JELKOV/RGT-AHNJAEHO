@@ -64,7 +64,7 @@ export const fetchBookByOne = async (id: string): Promise<Book> => {
 };
 
 // [POST] 새로운 책 데이터 추가하기
-export const addBook = async (book: any): Promise<any> => {
+export const addBook = async (book: Book): Promise<Book> => {
   try {
     const response = await fetch(BASE_URL, {
       method: "POST", // POST 요청
@@ -84,7 +84,7 @@ export const addBook = async (book: any): Promise<any> => {
 };
 
 // [PUT] 기존 책 데이터 수정하기
-export const updateBook = async (id: string, book: any): Promise<any> => {
+export const updateBook = async (id: string, book: Book): Promise<Book> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
       method: "PUT", // PUT 요청

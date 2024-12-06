@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { fetchBooks, deleteBook, changeBookQuantity } from "@/app/utils/api";
 import BookList from "@/app/components/BookList";
 import Pagination from "@/app/components/Pagination";
@@ -27,7 +27,7 @@ const HomePage = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
 
   // API 호출로 책 데이터 가져오기
-  const loadBooks = async () => {
+  const loadBooks = useCallback(async () => {
     try {
       setIsLoading(true);
       const data = await fetchBooks(filters);
@@ -40,12 +40,12 @@ const HomePage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [filters]); // filters 상태가 변경될 때만 호출
 
   // 필터 및 페이지 변경 시 데이터 가져오기
   useEffect(() => {
     loadBooks();
-  }, [filters]);
+  }, [loadBooks]);
 
   // 삭제 기능 구현
   const handleDelete = async (id: string) => {
