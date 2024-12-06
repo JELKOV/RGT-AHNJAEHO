@@ -5,12 +5,21 @@ import { fetchBookByOne, updateBook } from "@/app/utils/api"; // API 호출 유�
 import { useParams, useRouter } from "next/navigation"; // URL 파라미터와 라우터 네비게이션
 import BookForm from "@/app/components/BookForm"; // 책 폼 컴포넌트
 
+// Book 타입 정의
+type Book = {
+  id: string;
+  title: string;
+  author: string;
+  quantity: number;
+  description: string;
+};
+
 const EditPage = () => {
   const params = useParams(); // 동적 경로에서 파라미터 가져오기
   const router = useRouter(); // 네비게이션 사용
 
   const id = Array.isArray(params.id) ? params.id[0] : params.id; // 배열 또는 undefined 처리
-  const [book, setBook] = useState<any>(null); // 책 데이터 상태 관리
+  const [book, setBook] = useState<Book | null>(null); // 책 데이터 상태 관리
   const [error, setError] = useState<string | null>(null); // 에러 메시지 상태 관리
   const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태 관리
 

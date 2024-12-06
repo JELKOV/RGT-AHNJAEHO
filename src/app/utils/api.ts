@@ -2,6 +2,14 @@
 // 이 파일은 다양한 컴포넌트에서 재사용될 수 있도록 설계됨
 
 const BASE_URL = "/api/books"; // API 기본 URL 설정
+type Book = {
+  id: string;
+  title: string;
+  author: string;
+  quantity: number;
+  description?: string;
+};
+
 
 // [GET] 모든 책 데이터 가져오기
 export const fetchBooks = async (filters: { title?: string; author?: string; page?: number; limit?: number }): Promise<{ books: any[]; totalPages: number; currentPage: number }> => {

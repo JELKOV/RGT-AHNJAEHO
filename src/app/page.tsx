@@ -5,8 +5,17 @@ import { fetchBooks, deleteBook, changeBookQuantity } from "@/app/utils/api";
 import BookList from "@/app/components/BookList";
 import Pagination from "@/app/components/Pagination";
 
+// Book 타입 정의
+type Book = {
+  id: string;
+  title: string;
+  author: string;
+  quantity: number;
+  description: string;
+};
+
 const HomePage = () => {
-  const [books, setBooks] = useState<any[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [filters, setFilters] = useState({
     title: "",
     author: "",

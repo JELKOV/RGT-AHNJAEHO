@@ -4,11 +4,20 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { fetchBookByOne } from "@/app/utils/api"; // 책 상세 정보 API 호출
 
+// Book 타입 정의
+type Book = {
+  id: string;
+  title: string;
+  author: string;
+  quantity: number;
+  description: string;
+};
+
 const BookDetailPage = () => {
   const params = useParams(); // URL의 동적 매개변수 가져오기
   const { id } = params as { id: string }; // 타입 단언
 
-  const [book, setBook] = useState<any | null>(null);
+  const [book, setBook] = useState<Book | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
