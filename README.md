@@ -54,25 +54,31 @@ booklist-next-app/
 │   │   ├── api/
 │   │   │   ├── books/
 │   │   │   │   ├── [id]/
-│   │   │   │   │   ├── route.ts  # 특정 책 조회, 수정, 삭제 API
-│   │   │   │   ├── route.ts      # 책 목록 API
+│   │   │   │   │   └── route.ts        # 개별 책에 대한 CRUD API 처리
+│   │   │   │   ├── route.ts            # 책 리스트 API (GET, POST 등)
+│   │   │   ├── route.ts                # 책 관련 API 엔드포인트 (전체 책)
 │   │   ├── components/
-│   │   │   ├── BookForm.tsx      # 책 정보를 입력받는 공통 폼 컴포넌트
+│   │   │   ├── BookForm.tsx            # 책 추가/수정 폼 컴포넌트
+│   │   │   ├── BookList.tsx            # 책 목록을 표시하는 컴포넌트
+│   │   ├── layout.tsx                  # 페이지 레이아웃 (헤더, 푸터 등)
+│   │   ├── page.tsx                    # 메인 페이지 (책 리스트 등)
 │   │   ├── add/
-│   │   │   ├── page.tsx          # 책 추가 페이지
-│   │   ├── edit/
-│   │   │   ├── [id]/
-│   │   │   │   ├── page.tsx      # 책 수정 페이지
-│   │   ├── page.tsx              # 책 목록 페이지
+│   │   │   └── page.tsx                # 책 추가 페이지
 │   ├── data/
-│   │   ├── books.ts              # Mock 데이터와 데이터 업데이트 함수
-├── public/
-├── styles/
-│   ├── globals.css               # Tailwind CSS 글로벌 스타일
-├── README.md                     # 프로젝트 설명 파일
-├── package.json                  # 종속성 및 스크립트 설정
+│   │   └── books.ts                    # 더미 데이터 및 업데이트 함수
+│   ├── public/
+│   │   └── images/                     # 정적 이미지 파일 (책 커버 등)
+│   ├── utils/
+│   │   └── api.ts                      # API 호출 관련 유틸리티 함수
+│   ├── styles/
+│   │   └── globals.css                 # 전역 스타일 파일
+├── .gitignore                          # Git에서 제외할 파일 목록
+├── package.json                        # 프로젝트 메타 정보 및 의존성 목록
+├── README.md                           # 프로젝트 설명서
+├── tsconfig.json                       # TypeScript 설정 파일
+├── next.config.js                      # Next.js 설정 파일
+└── package-lock.json                   # 정확한 의존성 버전 관리
 ```
-
 ## 주요 API 엔드포인트
 
 ### 1. 책 목록 조회
