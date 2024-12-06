@@ -7,8 +7,8 @@ export async function GET(
   context: { params: { id: string } }
 ) {
   try {
-    // context.params를 명시적으로 await 처리
-    const { id } = await context.params;
+    // `params`를 비동기로 처리
+    const { id } = await context.params; // 기존 코드에서 `await`이 누락된 부분 추가
 
     // ID를 기반으로 책 검색
     const book = books.find((book) => book.id === id);
@@ -80,21 +80,29 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 }
 
 // [DELETE] 요청 처리: 특정 ID의 책 데이터 삭제
-export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
-  const { id } = await context.params; 
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    // `params`를 비동기로 처리
+    const { id } = await context.params;
 
-  if (!id) {
-    return NextResponse.json({ message: "유효하지 않은 요청입니다." }, { status: 400 });
+    const bookIndex = books.findIndex((book) => book.id === id);
+
+    if (bookIndex === -1) {
+      return NextResponse.json({ message: "책을 찾을 수 없습니다." }, { status: 404 });
+    }
+
+    const updatedBooks = books.filter((book) => book.id !== id);
+    updateBooks(updatedBooks);
+
+    return new NextResponse(null, { status: 204 });
+  } catch (error) {
+    console.error("[DELETE] 요청 처리 중 오류:", error);
+    return NextResponse.json(
+      { message: "서버에서 오류가 발생했습니다." },
+      { status: 500 }
+    );
   }
-
-  const bookIndex = books.findIndex((book) => book.id === id);
-
-  if (bookIndex === -1) {
-    return NextResponse.json({ message: "책을 찾을 수 없습니다." }, { status: 404 });
-  }
-
-  const updatedBooks = books.filter((book) => book.id !== id);
-  updateBooks(updatedBooks);
-
-  return new NextResponse(null, { status: 204 });
 }
