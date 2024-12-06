@@ -7,31 +7,24 @@
 
 ### 1. **next**  
 - **버전**: 15.0.3  
-- **설명**: Next.js는 React 기반의 프레임워크로, 서버 사이드 렌더링(SSR), 정적 사이트 생성(SSG), API 라우트 등을 지원합니다.
 
 ### 2. **react & react-dom**  
 - **버전**: 19.0.0-rc-66855b96-20241106  
-- **설명**: React는 사용자 인터페이스를 구축하기 위한 JavaScript 라이브러리입니다. `react-dom`은 브라우저에서 React 컴포넌트를 렌더링하는 역할을 합니다.
 
 ### 3. **typescript**  
 - **버전**: ^5  
-- **설명**: TypeScript는 JavaScript에 정적 타입을 추가하여 코드 품질을 높여주는 프로그래밍 언어입니다.
 
 ### 4. **tailwindcss**  
 - **버전**: ^3.4.16  
-- **설명**: Tailwind CSS는 유틸리티 우선 CSS 프레임워크로, 빠르고 효율적으로 스타일을 작성할 수 있게 해줍니다.
 
 ### 5. **eslint & eslint-config-next**  
-- **버전**: ^8 / 15.0.3  
-- **설명**: ESLint는 코드 품질을 유지하고 오류를 방지하기 위한 JavaScript/TypeScript 린팅 도구입니다. `eslint-config-next`는 Next.js 프로젝트에 맞는 ESLint 설정을 제공합니다.
+- **버전**: ^8 / 15.0.3  .
 
 ### 6. **postcss & autoprefixer**  
 - **버전**: ^8.4.49 / ^10.4.20  
-- **설명**: PostCSS는 CSS를 처리하고 최적화하는 도구입니다. `autoprefixer`는 CSS에 자동으로 브라우저 벤더 프리픽스를 추가해줍니다.
 
 ### 7. **ts-node**  
 - **버전**: ^10.9.2  
-- **설명**: TypeScript 코드를 Node.js 환경에서 바로 실행할 수 있게 해주는 도구입니다.
 
 ---
 
