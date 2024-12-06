@@ -77,7 +77,7 @@ booklist-next-app/
 ├── README.md                           # 프로젝트 설명서
 ├── tsconfig.json                       # TypeScript 설정 파일
 ├── next.config.js                      # Next.js 설정 파일
-└── package-lock.json                   # 정확한 의존성 버전 관리
+└── package-lock.json                   # 의존성 버전 관리
 ```
 ## 주요 API 엔드포인트
 
