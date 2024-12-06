@@ -2,17 +2,18 @@
 // 이 파일은 다양한 컴포넌트에서 재사용될 수 있도록 설계됨
 
 const BASE_URL = "/api/books"; // API 기본 URL 설정
+
 type Book = {
   id: string;
   title: string;
   author: string;
   quantity: number;
-  description?: string;
+  description: string;
 };
 
 
 // [GET] 모든 책 데이터 가져오기
-export const fetchBooks = async (filters: { title?: string; author?: string; page?: number; limit?: number }): Promise<{ books: any[]; totalPages: number; currentPage: number }> => {
+export const fetchBooks = async (filters: { title?: string; author?: string; page?: number; limit?: number }): Promise<{ books: Book[]; totalPages: number; currentPage: number }> => {
   console.log("[fetchBooks] 요청 시작:", filters);
 
   // 쿼리 스트링 생성
@@ -48,15 +49,16 @@ export const fetchBooks = async (filters: { title?: string; author?: string; pag
 };
 
 // [GET] 특정 ID를 가진 책 데이터 가져오기
-export const fetchBookByOne = async (id: string): Promise<any> => {
+export const fetchBookByOne = async (id: string): Promise<Book> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`); // ID를 포함한 GET 요청
     if (!response.ok) {
-      throw new Error(`ID ${id}에 해당하는 데이터를 가져오는 데 실패했습니다.`); // 요청 실패 시 에러
+      throw new Error(`ID ${id}에 해당하는 책을 불러오는 데 실패했습니다.`);
     }
-    return await response.json(); // JSON 데이터로 반환
+    const data = await response.json();
+    return data; // Book 타입의 데이터 반환
   } catch (err) {
-    console.error(`[fetchBookByOne] ID ${id} 데이터 가져오기 실패:`, err); // 에러 로깅
+    console.error(`[fetchBookByOne] ID ${id} 책 데이터 가져오기 실패:`, err);
     throw err;
   }
 };
